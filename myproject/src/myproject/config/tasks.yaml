@@ -1,0 +1,522 @@
+# research_task:
+#   description: >
+#     Conduct a thorough research about the latest news on {query}. 
+#     Be sure to look for sources that are reliable and publish recent news.
+#     Do not include articles that are not news material or that are not 
+#     directly related to {query}.
+    
+#     With this research, compile a list of the most relevant news 
+#     stories that you found. 
+
+#     Follow these rules:
+#     - Only include articles that are especially relevant to {query}. 
+#     Do not include any news that are not directly related to {query}. 
+#     - Do not include sources that are not a news article. 
+#     If the content of the page includes a list of articles or 
+#     looks like the front page of a website, do not include it in the list!
+#     - Summarize the news in a few sentences. Make the summary as long 
+#     as necessary to include all the relevant information, but not too 
+#     long for a newsletter.
+#     - Include the URL of the article where you found the news.
+#     - Include a minimum of 7 news articles and a maximum of 10 news 
+#     articles in the list.
+#     - When using the Search Tool, your search query should be concise 
+#     (for example, "latest news on {query}"). 
+
+#   expected_output: >
+#     A markdown document with the most relevant news stories. Each 
+#     news story should contain the following:
+#     - Title of the news
+#     - Summary of the news
+#     - URL of the article where the news was found
+
+#     Here is an example of the format of a news article that you 
+#     could include in the document:
+
+#     Title : [Title of the news]
+#     Summary : [Summary of the news]
+#     URL : [URL of the article where the news was found]
+
+#   agent: reporting_analyst
+
+
+# reporting_task:
+#   description: >
+#     Review the context you got.
+#     Given the list of news articles that will be used in the newsletter, 
+#     do the following things:
+    
+#     - Rewrite the title of each news article to make it more engaging and 
+#     interesting for the readers of the newsletter.
+#     - Add a paragraph to each news article that explains why this news is 
+#     important and how it can impact the readers of the newsletter.
+#     - Reorder the bullet points in a way that the most relevant news and 
+#     querys are at the top of the list based on the importance of the news 
+#     and querys.
+#     - Verify that the news articles are directly related to {query} and that 
+#     they are not off-query. If they are off-query, remove them from the list.
+#     - Verify that the URLs are correct and that they lead to the correct news 
+#     article. They should lead to a news article and not to a list of articles 
+#     or the front page of a website. If the URL is incorrect, ask the researcher 
+#     to provide the correct URL.
+#     - Do not search for additional news articles or change the content of the 
+#     news articles. Only edit the existing news articles.
+
+#     Make sure the report is detailed and contains any and all relevant information.
+#   expected_output: >
+#     A document with all the news to be included. The document should have a title related to the curated 
+#     stories and a list of news articles.
+    
+#     Each one should contain:
+#     - Title:
+#     - Summary: 
+#     - Why this is important:
+#     - Source: [URL of the article]
+
+#   agent: reporting_analyst
+#   # context: research_task
+
+# news_reporter_task:
+#   description: >
+#     Present an engaging news report based on the latest findings related to {query}.
+#     Ensure the news delivery is clear, compelling, and informative, using simple yet professional language.
+
+#     Follow these guidelines:
+#     - Review the list of news articles provided by the reporting_analyst.
+#     - Structure the news report to flow smoothly, leading with the most significant news.
+#     - Use a captivating opening line to grab the audience's attention and provide a brief overview of the report.
+#     - Maintain a balance of objectivity and insight, making the report suitable for the audience’s understanding.
+#     - Highlight key points in each news piece, ensuring clarity and impact.
+#     - Summarize the overall relevance of the news for the audience at the end of the report to reinforce its importance.
+
+#   expected_output: >
+#     A detailed document that includes a full script of the news report. Each section of the 
+#     report should consist of:
+#     - A headline for each news story
+#     - A brief introduction
+#     - The main body of the news report with essential facts and analysis
+#     - A concluding line that emphasizes the news story's impact
+
+#   agent: news_reporter
+#   context: reporting_task
+
+# # Calendar Task
+
+# task_create:
+#   description: >
+#     Create a new meeting event based on the {query}. Extract relevant details such as name, location, 
+#     start and end time, description, and attendee email IDs from the {query}. Today's date is {date} and 
+#     the timezone is {timezone}. Use this information especially when interpreting terms like 'today' or 'tomorrow'.
+#   expected_output: >
+#     Confirmation of the created event with all relevant details.
+#   agent: create_event_agent
+
+# task_find:
+#   description: >
+#     Search for an event based on the {query}. Retrieve event details such as name, date, time, location, 
+#     and participants that match the {query}. Today's date is {date} and the timezone is {timezone}.
+#   expected_output: >
+#     Detailed report of the event found.
+#   agent: find_event_agent
+
+# task_update:
+#   description: >
+#     Update an existing event based on the {query}. Locate the event details, and apply updates such as changes 
+#     in the name, location, start and end time, description, and attendee email IDs as per the {query}. Today's 
+#     date is {date} and the timezone is {timezone}.
+#   expected_output: >
+#     Confirmation of the updated event with specifics of the changes made.
+#   agent: update_event_agent
+
+# task_delete:
+#   description: >
+#     Delete an event based on the {query}. Locate the event in the calendar, verify it matches the {query} 
+#     requirements, and proceed with deletion. Today's date is {date} and the timezone is {timezone}.
+#   expected_output: >
+#     Confirmation of the deleted event.
+#   agent: delete_event_agent
+
+# #Retrieve task
+# retrieve_task:
+#   description: >
+#     Based on the user question {query}, retrieve specific information from a text file using the Reader_Tool. Extract only the relevant sections of text directly related to the query.
+#   expected_output: >
+#     The exact extracted text from the document relevant to the user's question.
+#   agent: retriever_agent
+
+# #Summarize task
+# summarise_task:
+#   description: >
+#     Use the retrieved text from retrieve_task to summarize the content based on the user question {query}. 
+#     Highlight key points such as facts, figures, dates, and main discussions, ensuring the summary is concise 
+#     yet comprehensive, capturing all essential details.
+#   expected_output: >
+#     A clear and comprehensive summary of the retrieved text, capturing important details in a concise format.
+#   agent: summarise_agent
+#   context: retrieve_task
+
+# #Question Anwering task
+# question_answer_task:
+#   description: >
+#     Use the retrieved text from retrieve_task to answer the user's specific question {query}. 
+#     Enhance the provided text with additional relevant information. If the required information is not found in the retrieved text, 
+#     use the search_tool to gather accurate and detailed answers.
+#     Ensure the response is clear, accurate, and directly answers the user query.
+#   expected_output: >
+#     A clear and accurate answer to the user's question, based on the content of the retrieved text or external sources if necessary.
+#   agent: question_answering_agent
+#   context: retrieve_task
+
+# #Create draft task
+# task_create_draft:
+#   description: >
+#     Create a draft email based on the provided {query}. Include the following details as specified:
+#     - Recipient(s): Email addresses to send the draft to.
+#     - Subject: The email subject line. Generate according to {query}.
+#     - Body Content: Main content of the email. Generate body if required.
+#     - Attachments: If any files or documents are mentioned, ensure they are included.
+
+#     Validate that all necessary details are present and format the email appropriately. 
+#     Save the draft securely in the user's Gmail account for future review or edits. Stop executing as soon as the task is complete. Don't keep looping.
+#   expected_output: >
+#     Confirmation that the draft email has been successfully created. 
+#     Provide the following details:
+#     - Draft ID
+#     - Recipient(s)
+#     - Subject
+#     - A snippet of the email content
+#     - Attachment details (if any)
+#   agent: gmail_create_draft_agent
+
+# #Send mail task
+# task_send_gmail:
+#   description: >
+#     Compose and send an email based on the provided {query}. Ensure the following:
+#     - From: kum19mittal03@gmail.com
+#     - Recipient(s): Include all specified email addresses.
+#     - Subject: Clearly define the purpose of the email.
+#     - Body Content: Write a well-structured, professional message aligned with the provided instructions.
+#     - Name: Kumkum Mittal
+#     - Attachments: Include any specified files or documents.
+
+#     Validate that the email is correctly formatted, free of errors, and suitable for the intended purpose.
+#     Send the email using the Gmail API and confirm successful delivery. Stop executing as soon as the task is complete. Don't keep looping.
+#   expected_output: >
+#     Confirmation of email delivery with the following details:
+#     - Recipient(s)
+#     - Subject
+#     - Email ID
+#     - Timestamp of delivery
+#   agent: gmail_send_agent
+
+# #Fetch mail task
+# task_fetch_mails:
+#   description: >
+#     Retrieve emails from the user's inbox based on the provided {query}. Ensure that if the user wants a specific mail based on the content, fetch only that mail.
+
+#     Extract and return key details for each email, including:
+#     - Email ID
+#     - Sender
+#     - Subject
+#     - Snippet (preview of the email content)
+#     - Thread ID (if applicable)
+
+#     Ensure that the process is efficient and returns the most relevant emails from the inbox. Stop executing as soon as the task is complete. Don't keep looping.
+#   expected_output: >
+#     A list of emails matching the query, with the following details for each email:
+#     - Email ID
+#     - Sender
+#     - Subject
+#     - Snippet
+#     - Thread ID (if applicable)
+#   agent: gmail_fetch_agent
+
+
+# # Get Weather Task
+# task_get_weather:
+#   description: >
+#     Provide the current weather and forecast for the location specified by the user ({query}). Include the following details:
+#     - Current temperature (Celsius/Fahrenheit).
+#     - Weather condition (e.g., sunny, cloudy, rainy).
+#     - Wind speed and direction.
+#     - Humidity percentage.
+#     - Additional information, such as precipitation chances or severe weather alerts, if available.
+
+#     Also answer the exact query {query} of the user.
+#     Ensure the response is accurate, concise, and formatted for easy understanding. Stop executing once the weather information is successfully retrieved and provided.
+#   expected_output: >
+#     A detailed weather report for the specified location, including:
+#     - Location name
+#     - Current temperature
+#     - Weather condition
+#     - Wind speed and direction
+#     - Humidity
+#     - Any severe weather alerts or additional information
+#     Answer of the {query} of the user.
+#   agent: weather_agent
+
+
+# # Get Weather Report Task
+# task_get_report:
+#   description: >
+#     Transform the weather information provided by the Weather Information Specialist into a spoken-style weather report. 
+#     The report should:
+#     - Begin with an engaging introduction that mentions the location.
+#     - Provide key weather details, including:
+#       - Current temperature (Celsius/Fahrenheit).
+#       - Weather condition (e.g., sunny, cloudy, rainy).
+#       - Wind speed and direction.
+#       - Humidity percentage.
+#       - Any additional relevant information, such as precipitation chances or severe weather alerts.
+#     - Use a natural, professional, and engaging tone that is suitable for listening.
+#     - End with a friendly conclusion, encouraging the user to ask further questions if needed.
+
+#     The goal is to create a report that is concise, easy to understand, and optimized for spoken delivery. Ensure it is formatted to sound natural when read aloud or converted into speech.
+#   expected_output: >
+#     A spoken-style weather report that includes:
+#     - An engaging introduction with the location name.
+#     - Clear and concise weather details, including temperature, conditions, wind, and humidity.
+#     - Additional forecast or alert information presented naturally.
+#     - A friendly and professional conclusion.
+
+#     The output should be short, crisp, and optimized for spoken delivery, making it suitable for broadcasting or announcements.
+#   agent: weather_reporter
+#   # context: [task_get_weather]
+
+
+#------------
+# research_task:
+#   description: >
+#     Research the latest news about {query}, focusing only on relevant, reliable, and recent articles. 
+#     Summarize findings into a markdown list with at least 7 and at most 10 entries. Include title, 
+#     summary, and URL for each article.
+#   expected_output: >
+#     Markdown list with news titles, summaries, and URLs.
+#   agent: reporting_analyst
+
+# reporting_task:
+#   description: >
+#     Edit and reorder the list of news articles for clarity and impact. Rewrite titles, explain relevance, 
+#     and verify URLs. Remove off-topic entries.
+#   expected_output: >
+#     A revised document with engaging titles, summaries, reasons for importance, and verified URLs.
+#   agent: reporting_analyst
+
+# news_reporter_task:
+#   description: >
+#     Present an engaging news report based on the provided articles. Write headlines, introductions, 
+#     detailed reports, and conclusions for each story, emphasizing relevance and impact.
+#   expected_output: >
+#     A full script with a captivating opening, detailed news coverage, and an impactful summary.
+#   agent: news_reporter
+
+# task_create:
+#   description: >
+#     Create a calendar event using details from {query}, including name, location, time, description, 
+#     and participants.
+#   expected_output: >
+#     Confirmation of event creation with all details.
+#   agent: create_event_agent
+
+# task_find:
+#   description: >
+#     Locate an event based on {query} and provide its details.
+#   expected_output: >
+#     Event name, date, time, location, and participants.
+#   agent: find_event_agent
+
+# task_update:
+#   description: >
+#     Update an existing calendar event with changes specified in {query}.
+#   expected_output: >
+#     Confirmation of updates made to the event.
+#   agent: update_event_agent
+
+# task_delete:
+#   description: >
+#     Delete a calendar event based on {query}.
+#   expected_output: >
+#     Confirmation of event deletion.
+#   agent: delete_event_agent
+
+# retrieve_task:
+#   description: >
+#     Extract text directly relevant to {query} from a document.
+#   expected_output: >
+#     Extracted text matching the query.
+#   agent: retriever_agent
+
+# summarise_task:
+#   description: >
+#     Summarize extracted text from retrieve_task to highlight key points relevant to {query}.
+#   expected_output: >
+#     Concise summary of the retrieved text.
+#   agent: summarise_agent
+
+# question_answer_task:
+#   description: >
+#     Answer {query} using text from retrieve_task or external sources if needed.
+#   expected_output: >
+#     A clear and accurate answer to the query.
+#   agent: question_answering_agent
+
+# task_create_draft:
+#   description: >
+#     Create a draft email using details from {query}, including recipients, subject, content, 
+#     and attachments.
+#   expected_output: >
+#     Draft ID, recipients, subject, snippet of content, and attachment details.
+#   agent: gmail_create_draft_agent
+
+# task_send_gmail:
+#   description: >
+#     Compose and send an email based on {query}, ensuring proper formatting and including attachments.
+#   expected_output: >
+#     Confirmation of email delivery with recipients, subject, and timestamp.
+#   agent: gmail_send_agent
+
+# task_fetch_mails:
+#   description: >
+#     Retrieve emails matching {query} from the inbox, including sender, subject, and snippets.
+#   expected_output: >
+#     List of emails with sender, subject, and preview.
+#   agent: gmail_fetch_agent
+
+# task_get_weather:
+#   description: >
+#     Provide the current weather and forecast for {query}, including temperature, conditions, wind, 
+#     humidity, and alerts.
+#   expected_output: >
+#     Detailed weather report for the location and an answer to the query.
+#   agent: weather_agent
+
+# task_get_report:
+#   description: >
+#     Convert weather data into a spoken-style report with an engaging introduction, clear details, 
+#     and a friendly conclusion.
+#   expected_output: >
+#     Spoken-style weather report with introduction, key details, and conclusion.
+#   agent: weather_reporter
+
+#Research Task
+research_task:
+  description: >
+    Research latest news on {query}. Include 1-2 relevant articles with titles, summaries, and URLs.Keep it short and crisp.
+  expected_output: >
+    A markdown list with:
+    - Title
+    - Summary
+    - URL
+  agent: researcher
+
+# Reporting Task
+reporting_task:
+  description: >
+    Refine the news list by rewriting titles, adding relevance, and reordering by importance.Keep it short and crisp.
+  expected_output: >
+    A list of news with:
+    - Engaging Title
+    - Summary
+    - Source URL
+  agent: reporting_analyst
+
+# News Reporter Task
+news_reporter_task:
+  description: >
+    Create an engaging news report summarizing findings. Use clear, compelling language.Keep it short and crisp.
+  expected_output: >
+    A full script including:
+    - Headline
+    - Brief intro
+    - Key facts and analysis
+    - Impact summary
+  agent: news_reporter
+
+# Calendar Tasks
+task_create:
+  description: >
+    Create a meeting based on {query}. Extract details and confirm creation.
+  expected_output: >
+    Confirmation of event creation.
+  agent: create_event_agent
+
+task_find:
+  description: >
+    Search for an event matching {query} and return details.
+  expected_output: >
+    Event details found.
+  agent: find_event_agent
+
+task_update:
+  description: >
+    Update event details based on {query}.
+  expected_output: >
+    Confirmation of updates made.
+  agent: update_event_agent
+
+task_delete:
+  description: >
+    Delete the event matching {query}.
+  expected_output: >
+    Confirmation of event deletion.
+  agent: delete_event_agent
+
+# Retrieve and Summarize Tasks
+retrieve_task:
+  description: >
+    Retrieve relevant sections of a text file for {query}.
+  expected_output: >
+    Extracted text directly relevant to the query.
+  agent: retriever_agent
+
+summarise_task:
+  description: >
+    Summarize retrieved text based on {query}.
+  expected_output: >
+    A clear summary with key points.
+  agent: summarise_agent
+
+# Question Answering Task
+question_answer_task:
+  description: >
+    Answer {query} using retrieved text or external sources if necessary.
+  expected_output: >
+    Clear, accurate response.
+  agent: question_answering_agent
+
+# Email Tasks
+task_create_draft:
+  description: >
+    Create an email draft based on {query}. Include recipients, subject, body, and attachments.Keep it short and crisp.
+  expected_output: >
+    Confirmation with draft details.
+  agent: gmail_create_draft_agent
+
+task_send_gmail:
+  description: >
+    Compose and send an email based on {query}. Include recipients, subject, and attachments.Keep it short and crisp.
+  expected_output: >
+    Confirmation of delivery.
+  agent: gmail_send_agent
+
+task_fetch_mails:
+  description: >
+    Retrieve emails matching {query}. Return key details.Keep it short and crisp.
+  expected_output: >
+    List of relevant emails with details.
+  agent: gmail_fetch_agent
+
+# Weather Tasks
+task_get_weather:
+  description: >
+    Provide current weather and forecast for {query}.
+  expected_output: >
+    Detailed weather report.
+  agent: weather_agent
+
+task_get_report:
+  description: >
+    Create a spoken-style weather report based on weather info.Keep it short and crisp.
+  expected_output: >
+    A concise, engaging spoken-style report.
+  agent: weather_reporter
